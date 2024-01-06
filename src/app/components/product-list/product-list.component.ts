@@ -23,8 +23,9 @@ export class ProductListComponent implements OnInit {
     this.maintainProductSrv.getProductList().subscribe((productList: ProductListModel) =>  {
       this.maintainProductSrv.AllProducts = productList.products;
       this.collectionSize = productList.total;
-      // this.Products = productList.products;
-      this.maintainProductSrv.ProductListUpdated.emit(productList.products);
+      this.Products = productList.products;
+      this.refreshProductList();
+      // this.maintainProductSrv.ProductListUpdated.emit(productList.products);
       this.getBrandQty(productList.products);
     });
     this.maintainProductSrv.ProductListUpdated.subscribe((products) => {

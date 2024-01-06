@@ -203,6 +203,11 @@ body{
       border: 0;
       border-left: 1px solid #EAECF0;
       background: transparent;
+       cursor: pointer;
+    }
+    .list-group-item.active{
+      background-color: $primary-light;
+      color: $primary;
     }
   }
 }

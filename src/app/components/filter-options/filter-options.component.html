@@ -4,7 +4,7 @@
    </div>
   <ul class="list-group list-group-flush ">
     <ng-container *ngFor="let category of Categories">
-      <li class="list-group-item list-group-item-action font-weight-light text-capitalize" (click)="filterProductByCategory(category)">{{category}}</li>
+      <li class="list-group-item list-group-item-action font-weight-light text-capitalize"  (click)="filterProductByCategory(category)">{{category}}</li>
     </ng-container>
   </ul>
   <div class="filter-title  my-3">
@@ -18,4 +18,11 @@
       </li>
     </ng-container>
   </ul>
+  <div class="filter-title  my-3">
+    <h6>Price Range(EGB)</h6>
+  </div>
+  <div class="d-flex align-items-center justify-content-center">
+    <span>from</span> <input id="from" #from="ngModel" [(ngModel)]="fromPrice" name="from" class="mx-2 form-control w-25" type="text" placeholder="100" (focusout)="filterByPrice()">
+    <span>to</span> <input id="to" #to="ngModel" name="to" [(ngModel)]="toPrice" class="mx-2 form-control w-25" type="text" placeholder="1000" (focusout)="filterByPrice()">
+  </div>
 </div>

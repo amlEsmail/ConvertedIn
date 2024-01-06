@@ -1,0 +1,21 @@
+<div class="filter-sec py-3">
+   <div class="filter-title  my-3">
+     <h6 >Category</h6>
+   </div>
+  <ul class="list-group list-group-flush ">
+    <ng-container *ngFor="let category of Categories">
+      <li class="list-group-item list-group-item-action font-weight-light text-capitalize" (click)="filterProductByCategory(category)">{{category}}</li>
+    </ng-container>
+  </ul>
+  <div class="filter-title  my-3">
+    <h6 >Brands</h6>
+  </div>
+  <ul class="list-group  list-group-flush ">
+    <ng-container *ngFor="let brand of Brands;let i = index;">
+      <li class="list-group-item d-flex   justify-content-between align-items-center" >
+        <span><input #checkBox type="checkbox"  aria-label="Checkbox for following text input" (change)="filterProductByBrand(brand.name,checkBox,i)"><span class="px-2 font-weight-normal"> {{brand.name}}</span></span>
+        <span class="badge  badge-pill badge-secondary">{{brand.qty}}</span>
+      </li>
+    </ng-container>
+  </ul>
+</div>

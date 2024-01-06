@@ -1,0 +1,15 @@
+<div class="container">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <ng-container *ngFor="let page of PageList;let i = index;">
+        <li  *ngIf="i === 0" class="breadcrumb-item "  ><a style="cursor: pointer"  (click)="visitHome()"><i class="fas fa-home"></i></a></li>
+        <li  *ngIf="i !== 0"  class="breadcrumb-item text-capitalize"><span>{{page}}</span></li>
+      </ng-container>
+
+    </ol>
+  </nav>
+</div>
+
+
+
+

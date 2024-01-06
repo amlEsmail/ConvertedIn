@@ -1,0 +1,37 @@
+
+<div class="products-container py-3">
+  <div class="row">
+    <ng-container *ngIf="productsByPage?.length == 0">
+      <div class="col align-self-center text-center">
+        <p class="lead"> No Product Found</p>
+      </div>
+    </ng-container>
+    <ng-container *ngFor="let product of productsByPage">
+      <div class="col-sm-6 col-md-3 d-flex flex-column mb-3 " (click)="showProductDetails(product.id)">
+        <div class="item-img p-2 text-center">
+          <img [src]="product.images[0]" class="card-img"/>
+        </div>
+        <div class="item-content p-2">
+          <p class="item-desc">{{product.description}}</p>
+          <div class="item-price d-flex justify-content-between ">
+            <span ><span class="currency px-1">EGB</span> <strong>{{product.price | number:'1.0'}}</strong></span>
+            <span class="badge badge-pill badge-light d-flex align-items-center"><i class="fas fa-star px-1"></i>{{product.rating}} <span class="stock px-1">({{product.stock}})</span></span>
+          </div>
+
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  <div class="row mt-5">
+    <div class="col align-self-center text-center " *ngIf="productsByPage.length != 0">
+      <ngb-pagination  class="d-inline-block pagination"
+                       [collectionSize]="collectionSize"
+                       [(page)]="page" [pageSize]="pageSize"
+                       (pageChange)="refreshProductList()">
+        <ng-template ngbPaginationPrevious><i class="fas fa-arrow-left"></i> Previous</ng-template>
+        <ng-template ngbPaginationNext>Next <i class="fas fa-arrow-right"></i></ng-template>
+      </ngb-pagination>
+    </div>
+  </div>
+
+</div>

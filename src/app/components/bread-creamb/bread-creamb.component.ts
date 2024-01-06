@@ -21,7 +21,7 @@ export class BreadCreambComponent implements OnInit {
   visitHome(): void{
     this.router.navigate(['']);
     this.maintainProductSrv.pageList.emit(['home']);
-    // this.maintainProductSrv.ProductListUpdated.emit(this.maintainProductSrv.AllProducts);
+    this.maintainProductSrv.ProductListUpdated.emit(this.maintainProductSrv.AllProducts);
   }
 
 }

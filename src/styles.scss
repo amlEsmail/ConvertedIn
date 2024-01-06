@@ -100,6 +100,9 @@ body{
  }
   .header-bottom{
     background-color: $primary-light;
+    .navbar-toggler-icon{
+      background-image: url("assets/imgs/download.svg");
+    }
     .navbar-nav{
       .nav-item{
         a{

@@ -9,6 +9,8 @@ import * as _ from 'lodash';
   styleUrls: ['./filter-options.component.scss']
 })
 export class FilterOptionsComponent implements OnInit {
+  fromPrice = null;
+  toPrice = null;
   Categories = [];
   Products: ProductModel[] = [];
   Brands: any [] = [];
@@ -18,7 +20,7 @@ export class FilterOptionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.Brands = this.maintainProductSrv.brands;
-   this.maintainProductSrv.getCategoriesList().subscribe((categories) => {
+    this.maintainProductSrv.getCategoriesList().subscribe((categories) => {
      this.Categories = categories;
    });
   }
@@ -27,7 +29,6 @@ export class FilterOptionsComponent implements OnInit {
     this.maintainProductSrv.getProductByCategory(category).subscribe((productList: ProductListModel) =>  {
       this.maintainProductSrv.ProductListUpdated.emit(productList.products);
       this.maintainProductSrv.pageList.emit(['home', category]);
-      console.log(this.Products);
     });
   }
 
@@ -50,6 +51,17 @@ export class FilterOptionsComponent implements OnInit {
       this.maintainProductSrv.pageList.emit(['home']);
     }
 
+  }
+
+  filterByPrice(): void{
+    if (this.fromPrice && this.toPrice){
+      this.filteredProduct  = _.filter(this.maintainProductSrv.AllProducts, (product)  => {
+        return  product.price >= this.fromPrice && product.price <= this.toPrice  ;
+      });
+      this.maintainProductSrv.ProductListUpdated.emit(this.filteredProduct);
+    }else{
+      this.maintainProductSrv.ProductListUpdated.emit(this.maintainProductSrv.AllProducts);
+    }
   }
 
 }

@@ -1208,14 +1208,7 @@ class ProductListComponent {
         this.pageSize = 20;
     }
     ngOnInit() {
-        this.maintainProductSrv.getProductList().subscribe((productList) => {
-            this.maintainProductSrv.AllProducts = productList.products;
-            this.collectionSize = productList.total;
-            this.Products = productList.products;
-            this.refreshProductList();
-            // this.maintainProductSrv.ProductListUpdated.emit(productList.products);
-            this.getBrandQty(productList.products);
-        });
+        this.getDataFromCache();
         this.maintainProductSrv.ProductListUpdated.subscribe((products) => {
             this.Products = products;
             this.collectionSize = this.Products.length;
@@ -1247,6 +1240,36 @@ class ProductListComponent {
     }
     showProductDetails(id) {
         this.router.navigate(['/details', id]);
+    }
+    getDataFromCache() {
+        const cachedResponse = JSON.parse(localStorage.getItem('Products'));
+        if (cachedResponse) {
+            if (cachedResponse.expireTime <= Date.now()) {
+                localStorage.removeItem('Products');
+                this.getDataFromCache();
+            }
+            else {
+                this.setProductList(cachedResponse.data);
+            }
+        }
+        else {
+            this.maintainProductSrv.getProductList().subscribe((productList) => {
+                const result = {
+                    data: productList
+                };
+                result.expireTime = Date.now() + 15 * 60 * 1000;
+                localStorage.setItem('Products', JSON.stringify(result));
+                this.setProductList(productList);
+            });
+        }
+    }
+    setProductList(productList) {
+        this.maintainProductSrv.AllProducts = productList.products;
+        this.collectionSize = productList.total;
+        this.Products = productList.products;
+        this.refreshProductList();
+        // this.maintainProductSrv.ProductListUpdated.emit(productList.products);
+        this.getBrandQty(productList.products);
     }
 }
 ProductListComponent.ɵfac = function ProductListComponent_Factory(t) { return new (t || ProductListComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_services_maintain_products_service__WEBPACK_IMPORTED_MODULE_2__["MaintainProductsService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"])); };

@@ -20,14 +20,7 @@ export class ProductListComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit(): void {
-    this.maintainProductSrv.getProductList().subscribe((productList: ProductListModel) =>  {
-      this.maintainProductSrv.AllProducts = productList.products;
-      this.collectionSize = productList.total;
-      this.Products = productList.products;
-      this.refreshProductList();
-      // this.maintainProductSrv.ProductListUpdated.emit(productList.products);
-      this.getBrandQty(productList.products);
-    });
+    this.getDataFromCache();
     this.maintainProductSrv.ProductListUpdated.subscribe((products) => {
       this.Products = products;
       this.collectionSize = this.Products.length;
@@ -65,4 +58,33 @@ export class ProductListComponent implements OnInit {
     this.router.navigate(['/details', id]);
 }
 
+
+  getDataFromCache(): void {
+     const cachedResponse = JSON.parse(localStorage.getItem('Products'));
+     if (cachedResponse){
+       if (cachedResponse.expireTime <= Date.now()){
+         localStorage.removeItem('Products');
+         this.getDataFromCache();
+       }else{
+         this.setProductList(cachedResponse.data);
+       }
+    }else{
+       this.maintainProductSrv.getProductList().subscribe((productList: ProductListModel) =>  {
+         const result: any  = {
+           data : productList
+         };
+         result.expireTime =  Date.now() + 15 * 60 * 1000;
+         localStorage.setItem('Products', JSON.stringify(result));
+         this.setProductList(productList);
+       });
+    }
+  }
+  setProductList(productList): void {
+    this.maintainProductSrv.AllProducts = productList.products;
+    this.collectionSize = productList.total;
+    this.Products = productList.products;
+    this.refreshProductList();
+    // this.maintainProductSrv.ProductListUpdated.emit(productList.products);
+    this.getBrandQty(productList.products);
+  }
 }
